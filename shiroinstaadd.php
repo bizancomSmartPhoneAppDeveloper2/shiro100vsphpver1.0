@@ -64,8 +64,9 @@ try{
 				$block = '九州・沖縄';			
 			}
 			echo "https://api.instagram.com/v1/tags/{$array[$i]}?access_token={$access_token}";
+			$encode = urlencode($array[$i]);
 			//$arrayの$i番目の要素をタグとした情報をJSON形式としたデータを格納
-			$obj = json_decode(@file_get_contents("https://api.instagram.com/v1/tags/{$array[$i]}?access_token={$access_token}"));
+			$obj = json_decode(@file_get_contents("https://api.instagram.com/v1/tags/{$encode}?access_token={$access_token}"));
 			//タグの投稿数を表す文字列を格納
 			$count = $obj->data->media_count;
 			//テーブルshirotagtableにカラムshironameに$arrayの$i番目の要素,カラムblockに$block,カラムtagcountに$count,カラムdateに$dateを挿入するSQL文の文字列を格納
