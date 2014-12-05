@@ -14,10 +14,12 @@ try{
 	$dbh = new PDO($dsn,$usr,$password);
 	//使う文字コードをutf8に設定
 	$dbh->query('SET NAMES utf8');
+	$i = 0;
 	//instagramに上がっている百名城のそれぞれの最新写真のURLを取りにいく繰り返し処理
-	for($i = 0;$i < count($array);$i++){
-			//$arrayの$i番目の要素のタグが付いたメディアリストを取得
-			$obj = json_decode(@file_get_contents("https://api.instagram.com/v1/tags/{$array[$i]}/media/recent?access_token={$access_token}&count=1"));
+	while($i < 100){
+			$encode = urlencode($array[$i]);
+			//$arrayの$i番目の要素をタグとした情報をJSON形式としたデータを格納
+			$obj = json_decode(@file_get_contents('https://api.instagram.com/v1/tags/'.$encode.'?access_token='.$access_token));
 			//ここのメディアの情報を表す配列を格納
 			$imagearray = $obj->data;
 			//メディアタイプの情報を表す文字列を格納
@@ -40,6 +42,7 @@ try{
 			}else{
 				echo $i.$array[$i].'は今画像でない<br>';
 			}
+		$i++;
 		}
 	$dbh = null;
 }
